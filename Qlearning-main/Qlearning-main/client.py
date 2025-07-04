@@ -19,7 +19,7 @@ class QLearningAgent:
         self.platform_attempts = 0
         self.platform_max_attempts = 750  #Revisar esse valor --> Foi suficiente para treinar ou podemos aumentar um pouco mais?
         
-        self.max_consecutive_rotations = 3
+        self.max_consecutive_rotations = 4
         self.max_repeated_actions = 5  #Revisar essa variável --> Conseguimos solucionar o problema de percorrer a primeira jornada?
         
         self.qtable_path = 'q_table.txt'
