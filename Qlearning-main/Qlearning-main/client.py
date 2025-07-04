@@ -4,7 +4,7 @@ import os
 from connection import connect, get_state_reward
 
 class QLearningAgent:
-    def __init__(self, alpha=0.65, gamma=0.95, epsilon=0.7, epsilon_min=0.05, epsilon_decay=0.997): #Verificar e Revisar o impacto das variáveis no decorrer da rodagem
+    def __init__(self, alpha=0.4, gamma=0.95, epsilon=0.7, epsilon_min=0.05, epsilon_decay=0.997): #Verificar e Revisar o impacto das variáveis no decorrer da rodagem
         self.alpha = alpha
         self.gamma = gamma
         self.epsilon = epsilon
@@ -19,7 +19,7 @@ class QLearningAgent:
         self.platform_attempts = 0
         self.platform_max_attempts = 750  #Revisar esse valor --> Foi suficiente para treinar ou podemos aumentar um pouco mais?
         
-        self.max_consecutive_rotations = 4
+        self.max_consecutive_rotations = 3
         self.max_repeated_actions = 5  #Revisar essa variável --> Conseguimos solucionar o problema de percorrer a primeira jornada?
         
         self.qtable_path = 'q_table.txt'
@@ -184,4 +184,4 @@ def main():
         print("🔌 Conexão encerrada")
 
 if __name__ == "__main__":
-    main()irão colocar seu algoritmo de aprendizado
+    main()
