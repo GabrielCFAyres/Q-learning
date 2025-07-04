@@ -130,9 +130,9 @@ class QLearningAgent:
 
                     #Revisar essa condicional
                     if next_platform > current_platform:
-                        reward -= 2 #Revisar a recompensa durante o treinamento --> Ela impacta ou vicia o agente?
+                        reward += 10 * (next_platform - current_platform) #Revisar a recompensa durante o treinamento --> Ela impacta ou vicia o agente?
                     elif next_platform < current_platform:
-                        reward -= 4 #Revisar a recompensa durante o treinamento --> Ela impacta ou vicia o agente?
+                        reward -= 5 #Revisar a recompensa durante o treinamento --> Ela impacta ou vicia o agente?
 
                     if next_state_bin == '0b0000000':
                         break
