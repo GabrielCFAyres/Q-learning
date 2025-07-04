@@ -4,7 +4,7 @@ import os
 from connection import connect, get_state_reward
 
 class QLearningAgent:
-    def __init__(self, alpha=0.4, gamma=0.95, epsilon=0.7, epsilon_min=0.05, epsilon_decay=0.997): #Verificar e Revisar o impacto das variáveis no decorrer da rodagem
+    def __init__(self, alpha=0.2, gamma=0.95, epsilon=0.7, epsilon_min=0.05, epsilon_decay=0.997):
         self.alpha = alpha
         self.gamma = gamma
         self.epsilon = epsilon
@@ -17,10 +17,10 @@ class QLearningAgent:
         self.base_starting_platform = 0
         self.current_starting_platform = 0
         self.platform_attempts = 0
-        self.platform_max_attempts = 750  #Revisar esse valor --> Foi suficiente para treinar ou podemos aumentar um pouco mais?
+        self.platform_max_attempts = 500
         
-        self.max_consecutive_rotations = 4
-        self.max_repeated_actions = 5  #Revisar essa variável --> Conseguimos solucionar o problema de percorrer a primeira jornada?
+        self.max_consecutive_rotations = 3
+        self.max_repeated_actions = 3 
         
         self.qtable_path = 'q_table.txt'
         if os.path.exists(self.qtable_path):
@@ -104,7 +104,7 @@ class QLearningAgent:
 
         self.current_starting_platform = platform
         platform_success = 0
-        print(f"\n🏁 INICIANDO PLATAFORMA {platform} (750 tentativas)")
+        print(f"\n🏁 INICIANDO PLATAFORMA {platform} (500 tentativas)")
 
         for attempt in range(1, self.platform_max_attempts + 1):
             try:
@@ -128,11 +128,10 @@ class QLearningAgent:
                     current_platform = self.binary_to_platform(state_bin)
                     next_platform = self.binary_to_platform(next_state_bin)
 
-                    #Revisar essa condicional
                     if next_platform > current_platform:
-                        reward += 10 * (next_platform - current_platform) #Revisar a recompensa durante o treinamento --> Ela impacta ou vicia o agente?
+                        reward += 10 * (next_platform - current_platform)
                     elif next_platform < current_platform:
-                        reward -= 5 #Revisar a recompensa durante o treinamento --> Ela impacta ou vicia o agente?
+                        reward -= 5
 
                     if next_state_bin == '0b0000000':
                         break
@@ -140,7 +139,7 @@ class QLearningAgent:
                     if state_idx == next_state_idx:
                         same_state_count += 1
                         if same_state_count > 2:
-                            reward -= 5 #Revisar a recompensa durante o treinamento --> Ela impacta ou vicia o agente?
+                            reward -= 5
                     else:
                         same_state_count = 0
 
@@ -155,13 +154,13 @@ class QLearningAgent:
                     state_bin = next_state_bin
                     self.epsilon = max(self.epsilon_min, self.epsilon * self.epsilon_decay)
                     
-                    print(f"[Plat.{platform}] Tentativa {attempt}/750 | Passo {steps} | Sucessos: {platform_success}", end='\r')
+                    print(f"[Plat.{platform}] Tentativa {attempt}/500 | Passo {steps} | Sucessos: {platform_success}", end='\r')
 
             except Exception as e:
                 print(f"⚠️ Erro: {str(e)}")
                 continue
 
-        print(f"\n📊 Teste da Plataforma {platform} finalizado: {platform_success}/750 sucessos")
+        print(f"\n📊 Teste da Plataforma {platform} finalizado: {platform_success}/500 sucessos")
         print(f"\n✅ Treinamento concluído! Sucessos totais: {total_success}")
 
     def save_q_table(self):
@@ -169,7 +168,7 @@ class QLearningAgent:
         print(f"💾 Q-table salva em {self.qtable_path}")
 
 def main():
-    print("🟢 Iniciando treinamento com 750 tentativas na plataforma alvo...")
+    print("🟢 Iniciando treinamento com 500 tentativas na plataforma alvo...")
     socket_conn = connect(2037)
     if not socket_conn:
         print("🚫 Conexão falhou.")
